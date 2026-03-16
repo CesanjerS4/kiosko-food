@@ -111,10 +111,24 @@ export default function PosScreen() {
         }}
       />
 
+      {/* Cart FAB — mini bar at bottom when cart has items */}
+      {totalItems > 0 && !cartVisible && (
+        <TouchableOpacity style={styles.cartFab} onPress={() => setCartVisible(true)} activeOpacity={0.9}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
+            <Ionicons name="cart" size={20} color="#fff" />
+            <Text style={styles.cartFabText}>{totalItems} {totalItems === 1 ? 'ítem' : 'ítems'}</Text>
+          </View>
+          <Text style={styles.cartFabPrice}>${totalPrice.toFixed(2)}</Text>
+          <Ionicons name="chevron-up" size={18} color="rgba(255,255,255,0.8)" style={{ marginLeft: 8 }} />
+        </TouchableOpacity>
+      )}
+
       {/* Cart Modal */}
       <Modal visible={cartVisible} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.cartSheet}>
+            {/* Drag handle */}
+            <View style={styles.dragHandle} />
             <View style={styles.cartHeader}>
               <Text style={styles.cartTitle}>🛒 Carrito</Text>
               <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -197,8 +211,12 @@ const styles = StyleSheet.create({
   productName: { color: Colors.textPrimary, fontWeight: '600', fontSize: 14, marginBottom: 4 },
   productPrice: { color: Colors.accent, fontWeight: '700', fontSize: 18 },
   // Modal
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end' },
-  cartSheet: { backgroundColor: Colors.surface, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '80%', minHeight: '40%' },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.55)', justifyContent: 'flex-end' },
+  cartSheet: { backgroundColor: Colors.surface, borderTopLeftRadius: 28, borderTopRightRadius: 28, maxHeight: '55%', minHeight: '28%' },
+  dragHandle: { width: 40, height: 4, backgroundColor: Colors.divider, borderRadius: 2, alignSelf: 'center', marginTop: 10, marginBottom: 2 },
+  cartFab: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: Colors.accent, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 14, shadowColor: Colors.accent, shadowOffset: { width: 0, height: -4 }, shadowOpacity: 0.3, shadowRadius: 12, elevation: 12 },
+  cartFabText: { color: '#fff', fontWeight: '600', fontSize: 15 },
+  cartFabPrice: { color: '#fff', fontWeight: '700', fontSize: 17 },
   cartHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: Spacing.lg, borderBottomWidth: 1, borderBottomColor: Colors.divider },
   cartTitle: { fontSize: 18, fontWeight: '600', color: Colors.textPrimary },
   emptyCart: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
